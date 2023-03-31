@@ -38,9 +38,6 @@ prodRoutes.get("/", async (req, res) => {
                 sortQuery[toSort] = toOrder;
             }
         }
-        if (query.category) {
-            queryToSend = { ...queryToSend, category: query.category };
-        }
         if (query.page) {
             if (query.limit) {
                 limit = +query.limit;
