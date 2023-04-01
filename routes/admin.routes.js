@@ -22,9 +22,9 @@ adminRoutes.post("/add", async (req, res) => {
             const preCheck = await adminModel.findOne({ email });
             if (!preCheck) {
                 const hashedPassword = await bcrypt.hash(req.body.password, 7);
-                const newUser = new adminModel({ ...req.body, password: hashedPassword });
-                await newUser.save();
-                res.status(200).send({ msg: "Admin has been registered", status: "success" });
+                const newAdmin = new adminModel({ ...req.body, password: hashedPassword });
+                await newAdmin.save();
+                res.status(200).send({ msg: "Admin has been registered", status: "success",data:newAdmin});
             } else {
                 res.status(400).send({ msg: "Admin already registered" });
             }
