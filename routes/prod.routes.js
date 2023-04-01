@@ -68,9 +68,9 @@ prodRoutes.post("/add", async (req, res) => {
     const { name, image, brand, originalPrice, discountPrice, category } = req.body;
     try {
         if (name && image && brand && originalPrice && discountPrice && category) {
-            const newUser = new prodModel(req.body);
-            await newUser.save();
-            res.status(200).send({ msg: "Product has been added", status: "success" });
+            const newProduct = new prodModel(req.body);
+            await newProduct.save();
+            res.status(200).send({ msg: "Product has been added", status: "success", data:newProduct});
         } else {
             res.status(400).send({ msg: "Invalid data format" })
         }
