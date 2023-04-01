@@ -1,3 +1,4 @@
+const { verifyToken } = require("../middlewares/auth.middleware");
 const { prodModel } = require("../models/product.model");
 
 const express = require("express");
@@ -61,6 +62,8 @@ prodRoutes.get("/:id", async (req, res) => {
     }
 })
 
+// Below's for admin only
+prodRoutes.use(verifyToken);
 prodRoutes.post("/add", async (req, res) => {
     const { name, image, brand, originalPrice, discountPrice, category } = req.body;
     try {
@@ -94,10 +97,4 @@ prodRoutes.patch("/update/:id", async (req, res) => {
     }
 })
 
-
 module.exports = { prodRoutes };
-
-// else if(req.query.q){
-//     const movies = await MovieModel.find({name:{$regex:req.query.q,$options:"$i"}})
-//     res.status(200).json(movies)
-// }
