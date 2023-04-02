@@ -10,7 +10,7 @@ prodRoutes.get("/", async (req, res) => {
         const query = req.query;
         let queryToSend = {};
         let sortQuery = {};
-        let limit = query.limit || 10;
+        let limit = query.limit || 12;
         let skip;
         let sort = [];
         let orderBy = [];
