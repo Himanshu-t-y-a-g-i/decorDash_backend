@@ -1,8 +1,8 @@
-const { adminModel } = require("../models/admin.model");
-
 const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { verifyToken } = require("../middlewares/auth.middleware");
+const { adminModel } = require("../models/admin.model");
 
 const adminRoutes = express.Router();
 
@@ -12,27 +12,6 @@ adminRoutes.get("/", async (req, res) => {
         res.status(200).send({ msg: data, status: "success" });
     } catch (e) {
         res.status(400).send({ msg: e.message })
-    }
-})
-
-adminRoutes.post("/add", async (req, res) => {
-    const { email } = req.body;
-    try {
-        if (req.body.name && req.body.email && req.body.password && req.body.contact && req.body.role && req.body.image) {
-            const preCheck = await adminModel.findOne({ email });
-            if (!preCheck) {
-                const hashedPassword = await bcrypt.hash(req.body.password, 7);
-                const newUser = new adminModel({ ...req.body, password: hashedPassword });
-                await newUser.save();
-                res.status(200).send({ msg: "Admin has been registered", status: "success" });
-            } else {
-                res.status(400).send({ msg: "Admin already registered" });
-            }
-        } else {
-            res.status(400).send({ msg: "Invalid data format" });
-        }
-    } catch (e) {
-        res.status(400).send({ msg: e.message });
     }
 })
 
@@ -51,6 +30,29 @@ adminRoutes.post("/login", async (req, res) => {
                 }
             } else {
                 res.status(400).send({ msg: "User not found" });
+            }
+        } else {
+            res.status(400).send({ msg: "Invalid data format" });
+        }
+    } catch (e) {
+        res.status(400).send({ msg: e.message });
+    }
+})
+
+// Below's for admin only
+adminRoutes.use(verifyToken);
+adminRoutes.post("/add", async (req, res) => {
+    const { email } = req.body;
+    try {
+        if (req.body.name && req.body.email && req.body.password && req.body.contact && req.body.role && req.body.images) {
+            const preCheck = await adminModel.findOne({ email });
+            if (!preCheck) {
+                const hashedPassword = await bcrypt.hash(req.body.password, 7);
+                const newAdmin = new adminModel({ ...req.body, password: hashedPassword });
+                await newAdmin.save();
+                res.status(200).send({ msg: "Admin has been registered", status: "success",data:newAdmin});
+            } else {
+                res.status(400).send({ msg: "Admin already registered" });
             }
         } else {
             res.status(400).send({ msg: "Invalid data format" });
