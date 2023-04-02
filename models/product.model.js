@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const schema = mongoose.Schema({
     name:String,
-    image: Object,
+    images: Object,
     brand: String,
     originalPrice:Number,
     discountPrice:Number,
