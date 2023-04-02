@@ -45,7 +45,7 @@ adminRoutes.get("/", async (req, res) => {
 adminRoutes.post("/add", async (req, res) => {
     const { email } = req.body;
     try {
-        if (req.body.name && req.body.email && req.body.password && req.body.contact && req.body.role && req.body.images) {
+        if (req.body.name && req.body.email && req.body.password && req.body.contact && req.body.role && req.body.image) {
             const preCheck = await adminModel.findOne({ email });
             if (!preCheck) {
                 const hashedPassword = await bcrypt.hash(req.body.password, 7);
