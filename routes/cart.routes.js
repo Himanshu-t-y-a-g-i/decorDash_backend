@@ -46,7 +46,7 @@ cartRoutes.delete("/delete/:id", async (req, res) => {
 
 cartRoutes.patch("/update/:id", async (req, res) => {
     try {
-        await cartModel.findByIdAndDelete(req.params.id, req.body);
+        await cartModel.findByIdAndUpdate(req.params.id, req.body);
         res.status(200).send({ msg: "Cart item details has been updated", status: "success" });
     } catch (e) {
         res.status(400).send({ msg: e.message });
