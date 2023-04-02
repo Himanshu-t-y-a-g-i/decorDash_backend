@@ -55,7 +55,7 @@ prodRoutes.get("/:id", async (req, res) => {
     const { id } = req.params;
     try {
         const data = await prodModel.find({ _id: id });
-        res.status(200).send({ msg: [data], status: "success" });
+        res.status(200).send({ msg: data, status: "success" });
     } catch (e) {
         res.status(400).send({ msg: e.message })
     }
