@@ -36,7 +36,7 @@ adminRoutes.use(verifyToken);
 adminRoutes.get("/", async (req, res) => {
     try {
         const data = await adminModel.find();
-        res.status(200).send({ msg: data, status: "success" });
+        res.status(200).send({data, status: "success" });
     } catch (e) {
         res.status(400).send({ msg: e.message })
     }
