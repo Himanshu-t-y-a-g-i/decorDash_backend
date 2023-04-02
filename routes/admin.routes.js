@@ -6,15 +6,6 @@ const { adminModel } = require("../models/admin.model");
 
 const adminRoutes = express.Router();
 
-adminRoutes.get("/", async (req, res) => {
-    try {
-        const data = await adminModel.find();
-        res.status(200).send({ msg: data, status: "success" });
-    } catch (e) {
-        res.status(400).send({ msg: e.message })
-    }
-})
-
 adminRoutes.post("/login", async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -41,10 +32,20 @@ adminRoutes.post("/login", async (req, res) => {
 
 // Below's for admin only
 adminRoutes.use(verifyToken);
+
+adminRoutes.get("/", async (req, res) => {
+    try {
+        const data = await adminModel.find();
+        res.status(200).send({data, status: "success" });
+    } catch (e) {
+        res.status(400).send({ msg: e.message })
+    }
+})
+
 adminRoutes.post("/add", async (req, res) => {
     const { email } = req.body;
     try {
-        if (req.body.name && req.body.email && req.body.password && req.body.contact && req.body.role && req.body.images) {
+        if (req.body.name && req.body.email && req.body.password && req.body.contact && req.body.role && req.body.image) {
             const preCheck = await adminModel.findOne({ email });
             if (!preCheck) {
                 const hashedPassword = await bcrypt.hash(req.body.password, 7);
